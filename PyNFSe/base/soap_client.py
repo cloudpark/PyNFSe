@@ -5,9 +5,9 @@ from zeep.transports import Transport
 
 class NFSeSoapClient(Client):
 
-    def __init__(self, url_env: str, certificate: tuple, is_production: bool=False):
+    def __init__(self, url_env, certificate, is_production=False):
         session = Session()
         session.cert = certificate
         session.verify = is_production
 
-        super().__init__(url_env, transport=Transport(session=session))
+        super(NFSeSoapClient, self).__init__(url_env, transport=Transport(session=session))

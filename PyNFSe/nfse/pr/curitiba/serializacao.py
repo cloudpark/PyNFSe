@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from pyxb import BIND
 
 from PyNFSe.nfse.pr.curitiba import _schema as nfse_schema
@@ -233,7 +234,7 @@ def _serial_rps(rps):
         'RegimeEspecialTributacao': rps.regime_especial,
         'OptanteSimplesNacional': rps.simples,
         'IncentivadorCultural': rps.incentivo,
-        'Status': 1,
+        'Status': rps.status,
         'Servico': _serial_servico(rps.servico),
         'Prestador': _serial_prestador(rps.prestador),
         'Tomador': _serial_tomador(rps.tomador),

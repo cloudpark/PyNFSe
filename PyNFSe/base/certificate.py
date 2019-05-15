@@ -1,10 +1,9 @@
 from tempfile import NamedTemporaryFile
-from typing import Tuple
 
 from OpenSSL import crypto
 
 
-def get_certificate(cfx_certificate_filepath: str, password: str) -> Tuple:
+def get_certificate(cfx_certificate_filepath, password):
     with open(cfx_certificate_filepath, 'rb') as cert_pfx:
         pkcs12 = crypto.load_pkcs12(cert_pfx.read(), password.encode())
 
@@ -25,7 +24,7 @@ def get_certificate(cfx_certificate_filepath: str, password: str) -> Tuple:
     return cert_ca, cert_file, key, key_file
 
 
-def _create_temp_file(content: bytes):
+def _create_temp_file(content):
     temp_file = NamedTemporaryFile()
     temp_file.write(content)
     temp_file.seek(0)

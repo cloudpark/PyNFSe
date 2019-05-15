@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from PyNFSe.base.certificate import get_certificate
 from PyNFSe.base.nfse_signer import NFSeSigner
 from PyNFSe.nfse.pr.curitiba import serializacao as s
 from PyNFSe.nfse.pr.curitiba.comunicacao import Comunicacao
+from lxml import etree, objectify
 
 
 class Facade:
@@ -49,11 +51,11 @@ class Facade:
         return xml_retorno
 
     def recepcionar_lote_rps(self, lote_rps):
-        xml = s.envio_lote_rps(lote_rps)
+        xml = s.envio_lote_rps(lote_rps).encode('utf-8')
         xml = self._assinador.sign_rps_batch(xml)
-        xml_retorno = self._servicos_wsdl.recepcionar_lote_rps(xml)
-
-        return xml_retorno
+        response = self._servicos_wsdl.recepcionar_lote_rps(xml)
+        response = self.sanitize_response(response)
+        return response
 
     def cancelar_nfse(self, pedido_cancelamento_nfse):
         xml = s.cancela_nfse(pedido_cancelamento_nfse)
@@ -66,3 +68,14 @@ class Facade:
         retorno = self._servicos_wsdl.validar_xml(xml)
 
         return retorno
+
+    def sanitize_response(self, response):
+        tree = etree.fromstring(response)
+        for elem in tree.getiterator():
+            if not hasattr(elem.tag, 'find'):
+                continue
+            i = elem.tag.find('}')
+            if i >= 0:
+                elem.tag = elem.tag[i + 1:]
+        objectify.deannotate(tree, cleanup_namespaces=True)
+        return objectify.fromstring(etree.tostring(tree))
