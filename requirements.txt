@@ -3,7 +3,6 @@ factory-boy
 isort
 lxml
 pre-commit
-pysimplemodel
 pytest
 pytest-cov
 PyXB==1.2.5
