@@ -35,7 +35,6 @@ INSTALL_REQUIREMENTS = [
     'requests',
     'zeep',
     'signxml',
-    'pysimplemodel',
 ]
 
 setup(
