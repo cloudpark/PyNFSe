@@ -26,7 +26,7 @@ class NFSeSigner:
         signature = self.sign(root, reference_uri)
         root.append(signature)
 
-        rps_batch_xml_signed = etree.tostring(root)
+        rps_batch_xml_signed = etree.tostring(root).decode('utf-8')
         rps_batch_xml_signed = rps_batch_xml_signed.replace('ds:', '').replace(':ds', '')
 
         return rps_batch_xml_signed
