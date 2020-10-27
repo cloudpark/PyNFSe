@@ -11,7 +11,7 @@ class Facade:
     def __init__(self, certificado_pfx, senha, producao=False):
         namespace = '{http://isscuritiba.curitiba.pr.gov.br/iss/nfse.xsd}'
         url_homologacao = 'https://pilotoisscuritiba.curitiba.pr.gov.br/nfse_ws/NfseWs.asmx?WSDL'
-        url_producao = 'https://isscuritiba.curitiba.pr.gov.br/Iss.NfseWebService/nfsews.asmx?WSDL'
+        url_producao = 'https://srv2-isscuritiba.curitiba.pr.gov.br/Iss.NfseWebService/nfsews.asmx?WSDL'
 
         self.cert, self.cert_file, self.key, self.key_file = get_certificate(certificado_pfx, senha)
         url_ambiente = url_producao if producao else url_homologacao
@@ -41,8 +41,8 @@ class Facade:
     def consultar_situacao_lote_rps(self, prestador, protocolo):
         xml = s.consulta_situacao_lote_rps(prestador, protocolo)
         xml_retorno = self._servicos_wsdl.consultar_situacao_lote_rps(xml)
-
-        return xml_retorno
+        response = self.sanitize_response(xml_retorno)
+        return response
 
     def consultar_lote_rps(self, prestador, protocolo):
         xml = s.consulta_lote_rps(prestador, protocolo)
